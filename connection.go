@@ -10,17 +10,11 @@ type Connector interface {
 }
 
 func (c *context) Connect() (RabbitMqContext, error) {
-	if c.amqpURI == "" {
-		return c, AmqpURICannotBeEmpty
-	}
-	if c.exchangeName == "" {
-		return c, ExchangeNameCannotBeEmpty
-	}
-	if c.exchangeType == "" {
-		return c, ExchangeTypeCannotBeEmpty
-	}
-
 	var err error
+
+	if err = verify(c); err != nil {
+		return c, err
+	}
 
 	if c.conn, err = amqp.Dial(c.amqpURI); err != nil {
 		return c, err
@@ -29,6 +23,19 @@ func (c *context) Connect() (RabbitMqContext, error) {
 	err = returnOnErr(c.openChannel, c.exchangeDeclare)
 
 	return c, err
+}
+
+func verify(c *context) error {
+	if c.amqpURI == "" {
+		return AmqpURICannotBeEmpty
+	}
+	if c.exchangeName == "" {
+		return ExchangeNameCannotBeEmpty
+	}
+	if c.exchangeType == "" {
+		return ExchangeTypeCannotBeEmpty
+	}
+	return nil
 }
 
 func (c *context) UseConnection(connection *amqp.Connection) {

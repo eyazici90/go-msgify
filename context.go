@@ -47,8 +47,7 @@ func copy(ctx *context, mutator func(*context)) RabbitMqContext {
 }
 
 func WithContext(rCtx RabbitMqContext) RabbitMqContext {
-	ctx := rCtx.(*context)
-	return copy(ctx, func(*context) {})
+	return copy(rCtx.(*context), func(*context) {})
 }
 
 func (c *context) WithExchange(name, exchangeType string) RabbitMqContext {
