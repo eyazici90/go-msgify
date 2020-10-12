@@ -39,6 +39,8 @@ func (c *context) openChannel() error {
 	var err error
 	c.channel, err = c.conn.Channel()
 
+	c.channel.Qos(c.prefetchCount, c.prefetchSize, false)
+
 	return err
 }
 

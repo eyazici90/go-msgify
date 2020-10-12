@@ -2,6 +2,11 @@ package msgify
 
 import "encoding/json"
 
+var (
+	DefaultPrefetchCount = 1
+	DefaultPrefetchSize  = 0
+)
+
 type ToJson func(interface{}) ([]byte, error)
 
 type FromJson func(string) (interface{}, error)
