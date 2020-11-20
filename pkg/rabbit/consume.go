@@ -1,10 +1,8 @@
-package msgify
-
-import "errors"
+package rabbit
 
 func (c *context) StartConsuming(consumerTag string) error {
 	if c.channel == nil {
-		return errors.New("No channel found. Please connect to exchange first!")
+		return ErrNoChannelFound
 	}
 
 	err := c.bindQueue()

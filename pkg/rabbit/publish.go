@@ -1,4 +1,4 @@
-package msgify
+package rabbit
 
 import (
 	"time"
@@ -8,10 +8,10 @@ import (
 
 func (c *context) Publish(msg Message) error {
 	if c.channel == nil {
-		return NoChannelFound
+		return ErrNoChannelFound
 	}
 
-	payload, err := toJsonDefault(msg)
+	payload, err := toJSONDefault(msg)
 
 	if err != nil {
 		return err

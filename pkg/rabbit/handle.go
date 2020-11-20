@@ -1,4 +1,4 @@
-package msgify
+package rabbit
 
 import (
 	"encoding/json"
@@ -6,11 +6,11 @@ import (
 	"github.com/streadway/amqp"
 )
 
-type Handle func(Message)
+type Handle func(*Message)
 
 func handle(c *context, deliveries <-chan amqp.Delivery, done chan error) {
 	for d := range deliveries {
-		msg := new(message)
+		msg := &Message{}
 		_ = json.Unmarshal(d.Body, msg)
 		c.handler(msg)
 		d.Ack(false)

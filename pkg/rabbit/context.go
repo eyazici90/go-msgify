@@ -1,4 +1,4 @@
-package msgify
+package rabbit
 
 import (
 	"github.com/streadway/amqp"
@@ -18,7 +18,7 @@ type context struct {
 	handler       Handle
 }
 
-func NewContext(amqpURI string) RabbitMqContext {
+func NewContext(amqpURI string) MqContext {
 	return &context{
 		conn:          nil,
 		channel:       nil,
@@ -28,7 +28,7 @@ func NewContext(amqpURI string) RabbitMqContext {
 	}
 }
 
-func copy(ctx *context, mutator func(*context)) RabbitMqContext {
+func copy(ctx *context, mutator func(*context)) MqContext {
 	newCtx := &context{
 		conn:          ctx.conn,
 		channel:       ctx.channel,
@@ -46,31 +46,31 @@ func copy(ctx *context, mutator func(*context)) RabbitMqContext {
 	return newCtx
 }
 
-func WithContext(rCtx RabbitMqContext) RabbitMqContext {
+func WithContext(rCtx MqContext) MqContext {
 	return copy(rCtx.(*context), func(*context) {})
 }
 
-func (c *context) WithExchange(name, exchangeType string) RabbitMqContext {
+func (c *context) WithExchange(name, exchangeType string) MqContext {
 	return copy(c, func(ctx *context) {
 		ctx.exchangeName = name
 		ctx.exchangeType = exchangeType
 	})
 }
 
-func (c *context) WithQueue(queueName, key string) RabbitMqContext {
+func (c *context) WithQueue(queueName, key string) MqContext {
 	return copy(c, func(ctx *context) {
 		ctx.queueName = queueName
 		ctx.bindingKey = key
 	})
 }
 
-func (c *context) WithHandle(handle Handle) RabbitMqContext {
+func (c *context) WithHandle(handle Handle) MqContext {
 	return copy(c, func(ctx *context) {
 		ctx.handler = handle
 	})
 }
 
-func (c *context) WithPrefetch(count, size int) RabbitMqContext {
+func (c *context) WithPrefetch(count, size int) MqContext {
 	return copy(c, func(ctx *context) {
 		ctx.prefetchCount = count
 		ctx.prefetchSize = size

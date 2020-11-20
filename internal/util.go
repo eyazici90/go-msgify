@@ -1,6 +1,6 @@
-package msgify
+package internal
 
-func returnOnErr(actions ...func() error) error {
+func ReturnOnErr(actions ...func() error) error {
 	for _, act := range actions {
 		if e := act(); e != nil {
 			return e
@@ -9,7 +9,7 @@ func returnOnErr(actions ...func() error) error {
 	return nil
 }
 
-func must(action func() error) {
+func Must(action func() error) {
 	err := action()
 	if err != nil {
 		panic(err)

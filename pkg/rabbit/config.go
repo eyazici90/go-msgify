@@ -1,4 +1,4 @@
-package msgify
+package rabbit
 
 import "github.com/streadway/amqp"
 

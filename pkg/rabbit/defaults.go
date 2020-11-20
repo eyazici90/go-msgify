@@ -1,4 +1,4 @@
-package msgify
+package rabbit
 
 import "encoding/json"
 
@@ -7,11 +7,11 @@ var (
 	DefaultPrefetchSize  = 0
 )
 
-type ToJson func(interface{}) ([]byte, error)
+type ToJSON func(interface{}) ([]byte, error)
 
-type FromJson func(string) (interface{}, error)
+type FromJSON func(string) (interface{}, error)
 
-var toJsonDefault ToJson = func(msg interface{}) ([]byte, error) {
+var toJSONDefault ToJSON = func(msg interface{}) ([]byte, error) {
 	return json.Marshal(msg)
 }
 

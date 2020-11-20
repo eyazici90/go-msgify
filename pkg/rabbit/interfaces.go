@@ -1,10 +1,10 @@
-package msgify
+package rabbit
 
 type (
 	ContextBuilder interface {
-		WithExchange(name, exchangeType string) RabbitMqContext
-		WithQueue(queueName, key string) RabbitMqContext
-		WithHandle(handle Handle) RabbitMqContext
+		WithExchange(name, exchangeType string) MqContext
+		WithQueue(queueName, key string) MqContext
+		WithHandle(handle Handle) MqContext
 	}
 	Publisher interface {
 		Publish(message Message) error
@@ -13,7 +13,7 @@ type (
 		StartConsuming(consumerTag string) error
 		StartConsumingBy(consumerTag string, handle Handle) error
 	}
-	RabbitMqContext interface {
+	MqContext interface {
 		ContextBuilder
 		Connector
 		Publisher

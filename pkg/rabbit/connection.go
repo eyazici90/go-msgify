@@ -1,15 +1,17 @@
-package msgify
+package rabbit
 
 import (
 	"github.com/streadway/amqp"
+
+	"github.com/eyazici90/go-msgify/internal"
 )
 
 type Connector interface {
-	Connect() (RabbitMqContext, error)
+	Connect() (MqContext, error)
 	UseConnection(connection *amqp.Connection)
 }
 
-func (c *context) Connect() (RabbitMqContext, error) {
+func (c *context) Connect() (MqContext, error) {
 	var err error
 
 	if err = verify(c); err != nil {
@@ -20,20 +22,20 @@ func (c *context) Connect() (RabbitMqContext, error) {
 		return c, err
 	}
 
-	err = returnOnErr(c.openChannel, c.exchangeDeclare)
+	err = internal.ReturnOnErr(c.openChannel, c.exchangeDeclare)
 
 	return c, err
 }
 
 func verify(c *context) error {
 	if c.amqpURI == "" {
-		return AmqpURICannotBeEmpty
+		return ErrAmqpURICannotBeEmpty
 	}
 	if c.exchangeName == "" {
-		return ExchangeNameCannotBeEmpty
+		return ErrExchangeNameCannotBeEmpty
 	}
 	if c.exchangeType == "" {
-		return ExchangeTypeCannotBeEmpty
+		return ErrExchangeTypeCannotBeEmpty
 	}
 	return nil
 }
